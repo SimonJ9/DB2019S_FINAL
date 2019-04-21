@@ -172,7 +172,7 @@ def compQuery():
         if (response == "BACK"):
             break
         searchq = "SELECT DISTINCT hospital.hospitalName, hospital.zip FROM hospital, hospital_comp WHERE hospital.providerID = hospital_comp.providerID AND hospital.hospitalName LIKE '%"+response+"%' ORDER BY hospital.zip;"
-        
+
         cur.execute(searchq)
         rows = cur.fetchall()
 
@@ -381,7 +381,7 @@ def Safest_Hospital():
         if(not rows):
             print("\nNo results found")
             continue
-            
+
         safest = rows[0][1]
         for row in rows:
             if(row[1] == safest): #results found
@@ -437,10 +437,10 @@ def Search_by_Budget():
         destq = locationInner() #here so the client gets the prompts in the correct order
 
         paytype = paytypes[int(care)-1]
-        payq = """(SELECT hospital.providerID, paymentAmount, zip, hospitalName
+        payq = """(SELECT hospital.providerID, MIN(paymentAmount) AS paymentAmount, zip, hospitalName
                     FROM hospital INNER JOIN hospital_payment
                     ON hospital.providerID = hospital_payment.providerID
-                    WHERE paymentAmount <= """ + upper + " AND paymentAmount >= "+ lower + ") as pay"""
+                    WHERE paymentAmount <= """ + upper + " AND paymentAmount >= "+ lower + "GROUP BY hospitalName, hospital.providerID) as pay"""
 
         finalq = "SELECT pay.hospitalName, paymentAmount, loc.address, loc.city, loc.state, pay.zip, loc.phone"+ \
                     " FROM " + destq + payq +\
@@ -450,6 +450,7 @@ def Search_by_Budget():
 
         if(not rows):
             print("\nNo results found")
+            continue
 
         count = 1
         page = 0
@@ -573,7 +574,5 @@ def timeRange_query():
     dEnd = datetime.strptime(tEnd, "%m/%d/%Y")
     cursor.execute("SELECT * FROM time_range WHERE dateStart BETWEEN (%s) AND (%s)", dStart, dEnd)
     result = cursor.fetchall()
-    
+
     print(result)
-    
-    
