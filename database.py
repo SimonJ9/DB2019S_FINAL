@@ -2,7 +2,8 @@ import psycopg2
 import psycopg2.extras
 import csv
 import os
-import Utils
+from Utils import Utils
+from datetime import datetime
 
 #Constants
 paytypes= ["PAYM_%%_AMI","PAYM_%%_HF","PAYM_%%_HIP_KNEE","PAYM_%%_PN"]
@@ -171,6 +172,7 @@ def compQuery():
         if (response == "BACK"):
             break
         searchq = "SELECT DISTINCT hospital.hospitalName, hospital.zip FROM hospital, hospital_comp WHERE hospital.providerID = hospital_comp.providerID AND hospital.hospitalName LIKE '%"+response+"%' ORDER BY hospital.zip;"
+        
         cur.execute(searchq)
         rows = cur.fetchall()
 
@@ -269,7 +271,7 @@ def avgQuery():
             types = [0,0,0,0] #AMI,HF,H/K,PN
             counts = [0,0,0,0]
             firstq = "SELECT hospital_payment.paymentID,hospital_payment.paymentAmount FROM "
-            lastq = " hospital_payment WHERE loc.pid = hospital_payment.providerID ;"
+            lastq = " hospital_payment WHERE loc.pid = hospital_payment.providerID;"
             finalq = firstq + destq + lastq
             cur.execute(finalq)
             rows = cur.fetchall()
@@ -379,7 +381,7 @@ def Safest_Hospital():
         if(not rows):
             print("\nNo results found")
             continue
-
+            
         safest = rows[0][1]
         for row in rows:
             if(row[1] == safest): #results found
@@ -448,34 +450,33 @@ def Search_by_Budget():
 
         if(not rows):
             print("\nNo results found")
-            continue
-        else:
-            count = 1
-            page = 0
-            print("\nNAME                COST    ADDRESS                         CITY            STATE    ZIP      PHONE")
-            for row in rows:
-                if (count <= 10):
-                    #pid,name,address,city,state,phone,cost,score
-                    print("{:<16}".format(row[0])[:16] + "    " + "{:<5}".format(row[1])[:5] + "   " +"{:<30}".format(row[2])[:28]+"    "+"{:<12}".format(row[3])[:12]+"    "+"{:<5}".format(row[4])[:5]+"    "+"{:<5}".format(row[5])[:5]+ "    "+row[6])
-                    count += 1
-                else:
-                    print("\nMessages %d to %d of %d" %(page*10+1, (page+1)*10, len(rows)))
-                    print("Type 1 to go next page or type 2 to return to query prompt\n")
-                    go_next_page = "ERROR"
-                    while(go_next_page == "ERROR"):
-                        go_next_page = safeInput()
-                        if (care not in ["1","2"]):
-                            print("ERROR: invalid input")
-                            care = "ERROR"
-                    if (go_next_page == "1"):
-                        count = 1
-                        page += 1
-                    else:
-                        break
 
-            if (count != 10):
-                    #pid,name,address,city,state,phone,cost,score
-                    print("\nMessages %d to %d of %d" %(page*10+1, len(rows), len(rows)))
+        count = 1
+        page = 0
+        print("\nNAME                COST    ADDRESS                         CITY            STATE    ZIP      PHONE")
+        for row in rows:
+            if (count <= 10):
+                #pid,name,address,city,state,phone,cost,score
+                print("{:<16}".format(row[0])[:16] + "    " + "{:<5}".format(row[1])[:5] + "   " +"{:<30}".format(row[2])[:28]+"    "+"{:<12}".format(row[3])[:12]+"    "+"{:<5}".format(row[4])[:5]+"    "+"{:<5}".format(row[5])[:5]+ "    "+row[6])
+                count += 1
+            else:
+                print("\nMessages %d to %d of %d" %(page*10+1, (page+1)*10, len(rows)))
+                print("Type 1 to go next page or type 2 to return to previous prompt")
+                go_next_page = "ERROR"
+                while(go_next_page == "ERROR"):
+                    go_next_page = safeInput()
+                    if (care not in ["1","2"]):
+                        print("ERROR: invalid input")
+                        care = "ERROR"
+                if (go_next_page == "1"):
+                    count = 1
+                    page += 1
+                else:
+                    break
+
+        if (count != 10):
+                #pid,name,address,city,state,phone,cost,score
+                print("\nMessages %d to %d of %d" %(page*10+1, len(rows), len(rows)))
 
 #locaction inner query creator just for deathrate_query
 def deathrate_location():
@@ -504,7 +505,7 @@ def deathrate_location():
     return locstr
 
 def deathrate_query():
-    conn = psycopg2.connect("dbname = 'postgres' user = 'postgres'")
+    conn = psycopg2.connect("dbname = 'postgres' user = 'postgres' password= 'postgres'")
     cur = conn.cursor()
     while(1):
         command = "ERROR"
@@ -561,3 +562,18 @@ def deathrate_query():
            # print(current_hospital)
         else:
             print("\nNo results found!\n")
+
+def timeRange_query():
+    conn = psycopg2.connect(Utils.conStr)
+    cursor = conn.cursor()
+    print("Please enter the time range")
+    tStart = raw_input("Data Start (MM/DD/YYYY)")
+    dStart = datetime.strptime(tStart, "%m/%d/%Y")
+    tEnd = raw_input("Data End (MM/DD/YYYY)")
+    dEnd = datetime.strptime(tEnd, "%m/%d/%Y")
+    cursor.execute("SELECT * FROM time_range WHERE dateStart BETWEEN (%s) AND (%s)", dStart, dEnd)
+    result = cursor.fetchall()
+    
+    print(result)
+    
+    
