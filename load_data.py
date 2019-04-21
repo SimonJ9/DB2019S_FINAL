@@ -39,6 +39,7 @@ if __name__ == '__main__':
 
 			info2 = list(row[b] for b in hospCompCols)
 			#Corrections for data types for hospital_comp
+			info1[1] = info1[1].replace("'","")
 			try:
 				holder = float(info2[2])
 			except ValueError:
