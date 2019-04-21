@@ -3,6 +3,7 @@ import psycopg2.extras
 import csv
 import os
 import Utils
+from datetime import datetime
 
 if __name__ == '__main__':
 
