@@ -340,7 +340,7 @@ def avgQuery():
                 if (counts[x] == 0):
                     print("No statistics found for "+desc[x])
                 else:
-                    print("Average "+"{:60}".format(desc[x])[:60]+"{:6}".format(str(types[x]))[:6]+"    "+"{:6}".format(str(counts[x]))[:6])
+                    print("Average "+"{:60}".format(desc[x])[:60]+"{:6}".format(str(types[x]/counts[x]))[:6]+"    "+"{:6}".format(str(counts[x]))[:6])
 
 def Safest_Hospital():
     conn = psycopg2.connect("dbname = 'postgres' user = 'postgres'")
