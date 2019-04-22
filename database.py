@@ -29,7 +29,7 @@ def locationInner():
                 zip = "ERROR"
         if (zip == ""):
             #Get the State
-            print("\nIf you want to search a specific state for hospitals, enter here. \nOtherwise, please leave blank\n")
+            print("\nIf you want to search a specific state for hospitals, enter here. (State abbreviation) \nOtherwise, please leave blank\n")
             while (state == "ERROR"):
                 state = safeInput()
                 if (len(state) >0 and len(state) != 2):
@@ -37,7 +37,7 @@ def locationInner():
                     state = "ERROR"
             #Get the city if state wasn't empty
             if (state != ""):
-                print("\nIf you want to search a specific city, enter here. \nOtherwise, please leave blank\n")
+                print("\nIf you want to search a specific city, enter here. (City name should be capitalized) \nOtherwise, please leave blank\n")
                 while(city == "ERROR"):
                     city = safeInput()
         #Formulate location inner query
@@ -490,7 +490,7 @@ def deathrate_location():
             print("ERROR: invalid input")
             zip = "ERROR"
     if (zip ==""):
-        print("\nIf you want to seach a specific state for hospitals, enter here.\nOtherwise, please leave blank\n")
+        print("\nIf you want to seach a specific state for hospitals, enter here. (State abbreviation) \nOtherwise, please leave blank\n")
         while(state == "ERROR"):
             state = safeInput()
             if(len(state)>0 and len(state)!=2):
