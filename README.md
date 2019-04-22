@@ -21,3 +21,4 @@ Zhengyi Shi
 2. Run load_data.py to populate the database. 
    Make sure to change "compfile" and "paymentfile" in load_data to reflect location and name of the csv's
    (placing the two csv's in the same folder as load_data.py with the default names should work)
+4. Run python3 application.py
