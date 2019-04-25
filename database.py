@@ -501,7 +501,7 @@ def deathrate_location():
     elif(state!=""):
         locstr = "WHERE hospital.zip = city.zip and city.stateName = '" +state +"' and hospital.providerID = hospital_comp.providerID and hospital_comp.measureid like '"+"MORT%'"
     else:
-        return "(select hospital.providerID as pid, hospital.hospitalName as name, hospital.zip as zipcode, city.stateroName as state, hospital_comp.compscore as score, hospital_comp.quantity as quantity, hospital_comp.measureid as measureid from hospital, city, hospital_comp where hospital.zip = city.zip and hospital.providerID = hospital_comp.providerID and hospital_comp.measureid like 'MORT%') as loc"
+        return "(select hospital.providerID as pid, hospital.hospitalName as name, hospital.zip as zipcode, city.statename as state, hospital_comp.compscore as score, hospital_comp.quantity as quantity, hospital_comp.measureid as measureid from hospital, city, hospital_comp where hospital.zip = city.zip and hospital.providerID = hospital_comp.providerID and hospital_comp.measureid like 'MORT%') as loc"
     locstr = "(select hospital.providerID as pid, hospital.hospitalName as name, hospital.zip as zipcode, city.stateName as state, hospital_comp.compscore as score, hospital_comp.quantity as quantity, hospital_comp.measureid as measureid from hospital, city, hospital_comp "+locstr+") as loc"
     return locstr
 
@@ -569,11 +569,11 @@ def timeRange_query():
     conn = psycopg2.connect(Utils.conStr)
     cursor = conn.cursor()
     print("Please enter the time range")
-    tStart = raw_input("Data Start (MM/DD/YYYY)")
+    tStart = input("Data Start (MM/DD/YYYY)")
     dStart = datetime.strptime(tStart, "%m/%d/%Y")
-    tEnd = raw_input("Data End (MM/DD/YYYY)")
+    tEnd = input("Data End (MM/DD/YYYY)")
     dEnd = datetime.strptime(tEnd, "%m/%d/%Y")
-    cursor.execute("SELECT * FROM time_range WHERE dateStart BETWEEN (%s) AND (%s)", dStart, dEnd)
+    cursor.execute("SELECT * FROM time_range WHERE dateStart BETWEEN %s AND %s", (dStart, dEnd))
     result = cursor.fetchall()
 
     print(result)

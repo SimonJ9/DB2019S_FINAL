@@ -15,7 +15,7 @@ DATA_COMPLICATIONS = "DATA/CompAndDeath.xml"
 paymentFile = "DATA/Payment_and_value_of_care_-_Hospital.csv"
 compFile = "DATA/Complications_and_Deaths_-_Hospital.csv"
 
-conStr = "dbname = 'postgres' user = 'postgres' password= 'postgres'"
+conStr = "dbname = 'postgres' user = 'postgres'"
 
 class PaymentTags(Enum):
     PID = "provider_id"
