@@ -10,7 +10,7 @@ def initialPrompt():
             "\t4. Find the safest hospital for given procedure\n"+\
             "\t5. Find a provider for a procedure under a budget\n"+\
             "\t6. Death rates by location\n"+\
-            "\t7. Time range query\n"+\
+            #"\t7. Time range query\n"+\
             "\tEXIT. Exit the program\n")
 
 #hospitalQuery not yet implemented
@@ -21,7 +21,7 @@ if __name__ == "__main__":
         command = db.safeInput()
         if (command == "EXIT" ):
             break
-        elif (command not in ["1","2","3","4","5","6", "7"]):
+        elif (command not in ["1","2","3","4","5","6"]): #,"7"
             print("ERROR: invalid input")
         else:
             functions[command]()

@@ -564,6 +564,7 @@ def deathrate_query():
         else:
             print("\nNo results found!\n")
 
+#Does not work properly
 def timeRange_query():
     conn = psycopg2.connect(Utils.conStr)
     cursor = conn.cursor()
