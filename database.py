@@ -569,28 +569,28 @@ def timeRange_query():
     invalid = False;
     conn = psycopg2.connect(Utils.conStr)
     cursor = conn.cursor()
-    
+
     while(True):
-        print("Enter the time to see available raws in the database")
-    
-        print("Please enter the time range, or BACK to get back")
-        tStart = input("Data Start (MM/DD/YYYY)")
-        
+        print("\nTIME RANGE QUERY: Enter the time to see available raws in the database")
+
+        print("Please enter the time range, or BACK to get back\n")
+        tStart = input("Data Start (MM/DD/YYYY) [MINIMUM YEAR 1970]\n")
+
         if(tStart == "BACK"):
             return None
-        
+
         ts = tStart.split("/")
         if len(ts) != 3:
             print("Invalid Input")
             continue
-        
+
         for i in range(len(ts)):
             if not ts[i].isdigit():
                 print("Invalid Input")
                 invalid = True
                 break
             ts[i] = int(ts[i])
-            
+
         if not (ts[0] >= 0 and ts[0] <= 12):
             invalid = True
         if ts[0] in [1, 3, 5, 7, 8, 10, 12]:
@@ -606,27 +606,27 @@ def timeRange_query():
             else:
                 if not (ts[1] >= 0 and ts[1] <= 28):
                     invalid = True
-                
+
         if not (ts[2] >= 1970 and ts[2] <= 2019):
             invalid = True
-        
+
         if invalid:
             print("Invalid Input")
             continue
-        
-        tEnd = input("Data End (MM/DD/YYYY)")
+
+        tEnd = input("Data End (MM/DD/YYYY)\n")
         te = tEnd.split("/")
         if len(te) != 3:
             print("Invalid Input")
             continue
-        
+
         for i in range(len(te)):
             if not te[i].isdigit():
                 print("Invalid Input")
                 invalid = True
                 break
             te[i] = int(te[i])
-                
+
         if not (te[0] >= 0 and te[0] <= 12):
             invalid = True
         if te[0] in [1, 3, 5, 7, 8, 10, 12]:
@@ -642,30 +642,33 @@ def timeRange_query():
             else:
                 if not (te[1] >= 0 and te[1] <= 28):
                     invalid = True
-                
+
         if not (te[2] >= 1970 and te[2] <= 2019):
             invalid = True
-        
+
         if invalid:
             print("Invalid Input")
             continue
-        
-            
+
+
         dStart = datetime.strptime(tStart, "%m/%d/%Y")
         dEnd = datetime.strptime(tEnd, "%m/%d/%Y")
-        
+
         cursor.execute("SELECT * FROM time_range WHERE dateStart BETWEEN %s AND %s", (dStart, dEnd))
         result = cursor.fetchall()
-        
+
         lim = "a"
-        
+
         while not lim.isdigit():
             lim = input("How many results needed?")
-        
+
         l = int(lim)
-        
+
         if l <= 0 or l > len(result):
             l = len(result)
-        
+
+        if (not l):
+            print("\nNo results found")
+
         for r in range(l):
             print("provider ID: " + result[r][2])
