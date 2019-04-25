@@ -163,7 +163,7 @@ def compQuery():
     while(1):
         response="ERROR"
         num = "ERROR"
-        print("\nPlease select a hospital to search for\n"+\
+        print("\nHOSPITAL SEARCH: Please select a hospital to search for\n"+\
               "or type BACK to return to previous prompt\n")
         while(response == "ERROR"):
             response = safeInput()
@@ -252,7 +252,7 @@ def avgQuery():
     conn = psycopg2.connect("dbname = 'postgres' user = 'postgres'")
     cur = conn.cursor()
     while(1):
-        print("\nPlease select a statistic to measure for averages\n"+\
+        print("\nAVERAGE SEARCH: Please select a statistic to measure for averages\n"+\
               "\t1. Prices\n"+\
               "\t2. Complication Scores\n"+\
               "\tBACK. Return to MAIN prompt\n")
