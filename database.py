@@ -199,7 +199,6 @@ def compQuery():
                         "WHERE hospital.providerID = hospital_comp.providerID " + \
                         "AND hospital.zip = '"+zip+"' " + \
                         "AND hospital.hospitalName like '"+hosp+"%'"
-            print(finalq)
             cur.execute(finalq)
             rows = cur.fetchall()
             print("\nSTATISTICS FOR: "+hosp+"")
