@@ -566,14 +566,102 @@ def deathrate_query():
 
 #Does not work properly
 def timeRange_query():
+    invalid = False;
     conn = psycopg2.connect(Utils.conStr)
     cursor = conn.cursor()
-    print("Please enter the time range")
-    tStart = input("Data Start (MM/DD/YYYY)")
-    dStart = datetime.strptime(tStart, "%m/%d/%Y")
-    tEnd = input("Data End (MM/DD/YYYY)")
-    dEnd = datetime.strptime(tEnd, "%m/%d/%Y")
-    cursor.execute("SELECT * FROM time_range WHERE dateStart BETWEEN %s AND %s", (dStart, dEnd))
-    result = cursor.fetchall()
-
-    print(result)
+    
+    while(True):
+    
+        print("Please enter the time range, or BACK to get back")
+        tStart = input("Data Start (MM/DD/YYYY)")
+        
+        if(tStart == "BACK"):
+            return None
+        
+        ts = tStart.split("/")
+        if len(ts) != 3:
+            print("Invalid Input")
+            continue
+        
+        for i in range(len(ts)):
+            if not ts[i].isdigit():
+                print("Invalid Input")
+                invalid = True
+                break
+            ts[i] = int(ts[i])
+            
+        if not (ts[0] >= 0 and ts[0] <= 12):
+            invalid = True
+        if ts[0] in [1, 3, 5, 7, 8, 10, 12]:
+            if not (ts[1] >= 0 and ts[1] <= 31):
+                invalid = True
+        elif ts[0] in [4, 6, 9, 11]:
+            if not (ts[1] >= 0 and ts[1] <= 30):
+                invalid = True
+        elif ts[0] == 2:
+            if ts[2] % 4 == 0:
+                if not (ts[1] >= 0 and ts[1] <= 29):
+                    invalid = True
+            else:
+                if not (ts[1] >= 0 and ts[1] <= 28):
+                    invalid = True
+                
+        if not (ts[2] >= 1970 and ts[2] <= 2015):
+            invalid = True
+        
+        if invalid:
+            print("Invalid Input")
+            continue
+        
+        tEnd = input("Data End (MM/DD/YYYY)")
+        te = tEnd.split("/")
+        if len(te) != 3:
+            print("Invalid Input")
+            continue
+        
+        for i in range(len(te)):
+            if not te[i].isdigit():
+                print("Invalid Input")
+                invalid = True
+                break
+            te[i] = int(te[i])
+                
+        if not (te[0] >= 0 and te[0] <= 12):
+            invalid = True
+        if te[0] in [1, 3, 5, 7, 8, 10, 12]:
+            if not (te[1] >= 0 and te[1] <= 31):
+                invalid = True
+        elif te[0] in [4, 6, 9, 11]:
+            if not (te[1] >= 0 and te[1] <= 30):
+                invalid = True
+        elif te[0] == 2:
+            if te[2] % 4 == 0:
+                if not (te[1] >= 0 and te[1] <= 29):
+                    invalid = True
+            else:
+                if not (te[1] >= 0 and te[1] <= 28):
+                    invalid = True
+                
+        if not (te[2] >= 1970 and te[2] <= 2015):
+            invalid = True
+        
+        if invalid:
+            print("Invalid Input")
+            continue
+        
+            
+        dStart = datetime.strptime(tStart, "%m/%d/%Y")
+        dEnd = datetime.strptime(tEnd, "%m/%d/%Y")
+        
+        cursor.execute("SELECT * FROM time_range WHERE dateStart BETWEEN %s AND %s", (dStart, dEnd))
+        result = cursor.fetchall()
+        
+        lim = "a"
+        
+        while not lim.isdigit():
+            lim = input("How many results needed?")
+        
+        lim = int(lim)
+        
+        for r in range(lim):
+            print(result[r])
