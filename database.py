@@ -563,32 +563,7 @@ def deathrate_query():
         else:
             print("\nNo results found!\n")
 
-
-#time input checke
-def time_check(in):
-    invalid = False
-    
-    if not (ts[0] >= 0 and ts[0] <= 12):
-        invalid = True
-    if ts[0] in [1, 3, 5, 7, 8, 10, 12]:
-        if not (ts[1] >= 0 and ts[1] <= 31):
-            invalid = True
-    elif ts[0] in [4, 6, 9, 11]:
-        if not (ts[1] >= 0 and ts[1] <= 30):
-            invalid = True
-    elif ts[0] == 2:
-        if ts[2] % 4 == 0:
-            if not (ts[1] >= 0 and ts[1] <= 29):
-                invalid = True
-        else:
-            if not (ts[1] >= 0 and ts[1] <= 28):
-                invalid = True
-
-    if not (ts[2] >= 1900 and ts[2] <= 9999):
-        invalid = True
-        
-    return invalid
-    
+#Does not work properly
 def timeRange_query():
     invalid = False;
     conn = psycopg2.connect(Utils.conStr)
@@ -615,7 +590,24 @@ def timeRange_query():
                 break
             ts[i] = int(ts[i])
 
-        invalid = time_check(ts)
+        if not (ts[0] >= 0 and ts[0] <= 12):
+            invalid = True
+        if ts[0] in [1, 3, 5, 7, 8, 10, 12]:
+            if not (ts[1] >= 0 and ts[1] <= 31):
+                invalid = True
+        elif ts[0] in [4, 6, 9, 11]:
+            if not (ts[1] >= 0 and ts[1] <= 30):
+                invalid = True
+        elif ts[0] == 2:
+            if ts[2] % 4 == 0:
+                if not (ts[1] >= 0 and ts[1] <= 29):
+                    invalid = True
+            else:
+                if not (ts[1] >= 0 and ts[1] <= 28):
+                    invalid = True
+
+        if not (ts[2] >= 1970 and ts[2] <= 2019):
+            invalid = True
 
         if invalid:
             print("Invalid Input")
@@ -634,11 +626,29 @@ def timeRange_query():
                 break
             te[i] = int(te[i])
 
-        invalid = time_check(te)
+        if not (te[0] >= 0 and te[0] <= 12):
+            invalid = True
+        if te[0] in [1, 3, 5, 7, 8, 10, 12]:
+            if not (te[1] >= 0 and te[1] <= 31):
+                invalid = True
+        elif te[0] in [4, 6, 9, 11]:
+            if not (te[1] >= 0 and te[1] <= 30):
+                invalid = True
+        elif te[0] == 2:
+            if te[2] % 4 == 0:
+                if not (te[1] >= 0 and te[1] <= 29):
+                    invalid = True
+            else:
+                if not (te[1] >= 0 and te[1] <= 28):
+                    invalid = True
+
+        if not (te[2] >= 1970 and te[2] <= 2019):
+            invalid = True
 
         if invalid:
             print("Invalid Input")
             continue
+
 
         dStart = datetime.strptime(tStart, "%m/%d/%Y")
         dEnd = datetime.strptime(tEnd, "%m/%d/%Y")
