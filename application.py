@@ -9,13 +9,10 @@ def initialPrompt():
             "\t3. Find average statistics for an area\n"+\
             "\t4. Find the safest hospital for given procedure\n"+\
             "\t5. Find a provider for a procedure under a budget\n"+\
-<<<<<<< HEAD
             "\t6. Find death rates by location\n"+\
-            #"\t7. Time range query\n"+\
-=======
+            "\t7. Time range query\n"+\
             "\t6. Death rates by location\n"+\
             "\t7. Time range query\n"+\
->>>>>>> 9fe7fdeb0efc69cba87074bff3f4a971e50b1240
             "\tEXIT. Exit the program\n")
 
 #hospitalQuery not yet implemented
