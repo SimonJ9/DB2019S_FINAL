@@ -571,6 +571,7 @@ def timeRange_query():
     cursor = conn.cursor()
     
     while(True):
+        print("Enter the time to see available raws in the database")
     
         print("Please enter the time range, or BACK to get back")
         tStart = input("Data Start (MM/DD/YYYY)")
@@ -606,7 +607,7 @@ def timeRange_query():
                 if not (ts[1] >= 0 and ts[1] <= 28):
                     invalid = True
                 
-        if not (ts[2] >= 1970 and ts[2] <= 2015):
+        if not (ts[2] >= 1970 and ts[2] <= 2019):
             invalid = True
         
         if invalid:
@@ -642,7 +643,7 @@ def timeRange_query():
                 if not (te[1] >= 0 and te[1] <= 28):
                     invalid = True
                 
-        if not (te[2] >= 1970 and te[2] <= 2015):
+        if not (te[2] >= 1970 and te[2] <= 2019):
             invalid = True
         
         if invalid:
@@ -661,7 +662,10 @@ def timeRange_query():
         while not lim.isdigit():
             lim = input("How many results needed?")
         
-        lim = int(lim)
+        l = int(lim)
         
-        for r in range(lim):
+        if l <= 0 or l > len(result):
+            l = len(result)
+        
+        for r in range(l):
             print(result[r])
