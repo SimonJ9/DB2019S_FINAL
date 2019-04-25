@@ -668,4 +668,4 @@ def timeRange_query():
             l = len(result)
         
         for r in range(l):
-            print(result[r])
+            print("provider ID: " + result[r][2])
